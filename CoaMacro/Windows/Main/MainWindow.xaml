@@ -1,14 +1,14 @@
 ﻿<Window x:Class="CoaMacro.Windows.Main.MainWindow"
+        Style="{StaticResource GradientWindowStyle}"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Macro Automação"
+        Title="MACRO COA"
         Height="300" Width="500"
         ResizeMode="NoResize"
-        Background="#f0f2f5"
         WindowStartupLocation="CenterScreen">
 
     <Grid>
@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <!-- Título -->
-        <TextBlock x:Name="lblNumeroExecucoes"
+        <TextBlock x:Name="LblNumeroExecucoes"
                    Text="Número de Execuções: 0"
                    FontSize="20"
                    FontWeight="Bold"
@@ -34,18 +34,18 @@
                    Margin="0,0,0,20"
                    Grid.Row="1">
             <StackPanel Margin="10,0">
-                <TextBlock Text="Coluna:" FontWeight="SemiBold" Foreground="#444" Margin="0,0,0,5"/>
-                <xctk:IntegerUpDown x:Name="numericPX" Width="80" Height="28" Minimum="1" Maximum="4" Value="1"/>
+                <TextBlock Text="Coluna:" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
+                <xctk:IntegerUpDown x:Name="NumericPx" FontSize="18" Width="90" Height="28" Minimum="1" Maximum="4" Value="1"/>
             </StackPanel>
 
             <StackPanel Margin="10,0">
-                <TextBlock Text="Linha:" FontWeight="SemiBold" Foreground="#444" Margin="0,0,0,5"/>
-                <xctk:IntegerUpDown x:Name="numericPY" Width="80" Height="28" Minimum="1" Maximum="50" Value="1"/>
+                <TextBlock Text="Linha:" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
+                <xctk:IntegerUpDown x:Name="NumericPy" FontSize="18" Width="90" Height="28" Minimum="1" Maximum="50" Value="1"/>
             </StackPanel>
 
             <StackPanel Margin="10,0">
-                <TextBlock Text="Repetições:" FontWeight="SemiBold" Foreground="#444" Margin="0,0,0,5"/>
-                <xctk:IntegerUpDown x:Name="numericLoops" Width="80" Height="28" Minimum="1" Maximum="9999" Value="1"/>
+                <TextBlock Text="Repetições:" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
+                <xctk:IntegerUpDown x:Name="NumericLoops"  FontSize="18" Width="90" Height="28" Minimum="1" Maximum="9999" Value="1"/>
             </StackPanel>
         </WrapPanel>
 
@@ -53,16 +53,16 @@
         <WrapPanel HorizontalAlignment="Center"
                    Grid.Row="2"
                    Margin="0,0,0,10">
-            <Button x:Name="btnIniciar"
+            <Button x:Name="BtnIniciar"
                     Content="Iniciar"
                     Style="{StaticResource ModernButtonStyle}"
-                    Click="btnStart_Click"
+                    Click="BtnStart_Click"
                     Margin="10,0"/>
 
-            <Button x:Name="btnTestar"
+            <Button x:Name="BtnTestar"
                     Content="Testar"
                     Style="{StaticResource DangerButtonStyle}"
-                    Click="btnTeste"
+                    Click="BtnTeste"
                     Margin="10,0"/>
         </WrapPanel>
     </Grid>

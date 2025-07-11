@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
+using CoaMacro.Windows.Main.Struct;
 using WindowsInput;
 using WindowsInput.Events;
 
@@ -9,7 +10,7 @@ namespace CoaMacro.Windows.Main;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow
 {
     private CancellationTokenSource? _cts;
     private int _executionCount;
@@ -17,8 +18,6 @@ public partial class MainWindow : Window
     private int _linha;
     
     // === DllImports ===
-    [DllImport("dwmapi.dll")]
-    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
     [DllImport("user32.dll")]
     private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
@@ -30,18 +29,10 @@ public partial class MainWindow : Window
     private static extern bool SetForegroundWindow(IntPtr hWnd);
 
     [DllImport("user32.dll")]
-    private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+    private static extern bool GetWindowRect(IntPtr hWnd, out RectPerson lpRectPerson);
 
     private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct RECT
-    {
-        public int Left;
-        public int Top;
-        public int Right;
-        public int Bottom;
-    }
+    
 
     public MainWindow()
     {
@@ -49,17 +40,16 @@ public partial class MainWindow : Window
     }
     
     // === Botões Iniciar / Parar ===
-    private async void btnStart_Click(object sender, EventArgs e)
+    private async void BtnStart_Click(object sender, EventArgs e)
     {
         if (_cts != null) return;
 
-        int loops = numericLoops.Value ?? 1;
-        // int loadDelay = (int)numericLoadDelay.Value;
+        int loops = NumericLoops.Value ?? 1;
 
         _cts = new CancellationTokenSource();
      
         CalcularPosicaoInicial();
-        await RunMacro(loops, 6000, _cts.Token);
+        await RunMacro(loops);
         
         _cts.Dispose();
         _cts = null;
@@ -72,8 +62,8 @@ public partial class MainWindow : Window
         int baseY = 100;
         int stepX = 200;
         int stepY = 200;
-        int pX = numericPX.Value ?? 1;
-        int pY = numericPY.Value ?? 1;
+        int pX = NumericPx.Value ?? 1;
+        int pY = NumericPy.Value ?? 1;
         
         _coluna = (pX == 1) ? 450 : baseX + (pX * stepX);
         _linha = (pY == 1) ? 300 : baseY + (pY * stepY);
@@ -84,7 +74,7 @@ public partial class MainWindow : Window
         string nomeParcial = "Crystal of Atlan";
         IntPtr janelaEncontrada = IntPtr.Zero;
 
-        EnumWindows((hWnd, lParam) =>
+        EnumWindows((hWnd, _) =>
         {
             StringBuilder sb = new StringBuilder(256);
             GetWindowText(hWnd, sb, sb.Capacity);
@@ -108,11 +98,11 @@ public partial class MainWindow : Window
         return janelaEncontrada;
     }
     
-    private async Task MoverMouseNaJanela(IntPtr hWnd, int offsetX, int offsetY)
+    private static async Task MoverMouseNaJanela(IntPtr hWnd, int offsetX, int offsetY)
     {
         if (hWnd == IntPtr.Zero) return;
 
-        if (GetWindowRect(hWnd, out RECT rect))
+        if (GetWindowRect(hWnd, out RectPerson rect))
         {
             int posX = rect.Left + offsetX;
             int posY = rect.Top + offsetY;
@@ -123,42 +113,40 @@ public partial class MainWindow : Window
         }
     }
     
-    private async Task RunMacro(int loops, int loadDelay, CancellationToken token)
+    private async Task RunMacro(int loops)
     {
         for (int i = 0; i < loops; i++)
         {
-            //if (AtualizarBotao(token)) break;
-
             IntPtr hWnd = VerificarJanela();
             if (hWnd == IntPtr.Zero) break;
 
             SetForegroundWindow(hWnd);
 
             UpdateCounter();
-            
-            await Task.Delay(50);
+
+            await GerarDelay(50);
             await MoverMouseNaJanela(hWnd, _coluna, _linha); 
-            await Task.Delay(50);
+            await GerarDelay(50);
             await Simulate.Events().Click(ButtonCode.Left).Invoke();
-            await Task.Delay(200);
+            await GerarDelay(200);
             await MoverMouseNaJanela(hWnd, 450, 250);
             await Simulate.Events().Click(ButtonCode.Left).Invoke();
-            await Task.Delay(200);
+            await GerarDelay(200);
             await MoverMouseNaJanela(hWnd, 650, 570);
             await Simulate.Events().Click(ButtonCode.Left).Invoke();
-            await Task.Delay(200);
+            await GerarDelay(200);
             await MoverMouseNaJanela(hWnd, 995, 210);
-            await Task.Delay(50);
+            await GerarDelay(50);
             await Simulate.Events().Click(ButtonCode.Left).Invoke();
-            await Task.Delay(50);
+            await GerarDelay(50);
             await MoverMouseNaJanela(hWnd, 370, 200); 
-            await Task.Delay(100);
+            await GerarDelay(100);
             await Simulate.Events().Click(ButtonCode.Left).Invoke();
         }
         
     }
     
-    private async void btnTeste(object sender, EventArgs e)
+    private async void BtnTeste(object sender, EventArgs e)
     {
         
         IntPtr hWnd = VerificarJanela();
@@ -174,6 +162,12 @@ public partial class MainWindow : Window
     private void UpdateCounter()
     {
         _executionCount++;
-        lblNumeroExecucoes.Text = $"Número de Execuções: {_executionCount}";
+        LblNumeroExecucoes.Text = $"Número de Execuções: {_executionCount}";
+    }
+    
+    private static async Task GerarDelay(int tempo)
+    {
+        if (tempo <= 0) tempo = 50;
+        await Task.Delay(tempo);
     }
 }
