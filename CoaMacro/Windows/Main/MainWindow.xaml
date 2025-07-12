@@ -34,19 +34,25 @@
                    Margin="0,0,0,20"
                    Grid.Row="1">
             <StackPanel Margin="10,0">
+                <TextBlock Text="Delay (Ms):" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
+                <xctk:IntegerUpDown x:Name="NumericDelay" FontSize="18" Increment="500" Width="90" Height="28" Minimum="500" Maximum="10000" Value="1000"/>
+            </StackPanel>
+            
+            <StackPanel Margin="10,0">
+                <TextBlock Text="Repetições:" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
+                <xctk:IntegerUpDown x:Name="NumericLoops"  FontSize="18" Width="90" Height="28" Minimum="1" Maximum="9999" Value="1"/>
+            </StackPanel>
+            
+            <StackPanel Margin="10,0">
                 <TextBlock Text="Coluna:" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
-                <xctk:IntegerUpDown x:Name="NumericPx" FontSize="18" Width="90" Height="28" Minimum="1" Maximum="4" Value="1"/>
+                <xctk:IntegerUpDown x:Name="NumericPx" FontSize="18" Width="90" Height="28" Minimum="1" Maximum="16" Value="1"/>
             </StackPanel>
 
             <StackPanel Margin="10,0">
                 <TextBlock Text="Linha:" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
                 <xctk:IntegerUpDown x:Name="NumericPy" FontSize="18" Width="90" Height="28" Minimum="1" Maximum="50" Value="1"/>
             </StackPanel>
-
-            <StackPanel Margin="10,0">
-                <TextBlock Text="Repetições:" FontSize="16" FontWeight="SemiBold" Foreground="Black" Margin="0,0,0,5"/>
-                <xctk:IntegerUpDown x:Name="NumericLoops"  FontSize="18" Width="90" Height="28" Minimum="1" Maximum="9999" Value="1"/>
-            </StackPanel>
+            
         </WrapPanel>
 
         <!-- Botões -->
